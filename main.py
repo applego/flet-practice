@@ -17,5 +17,8 @@ def main(page: Page):
     greetings = GreetingsApp()
     page.add(greetings)
 
+    text = Text(value="Hello World!")
+    page.add(text)
+
 
 flet.app(target=main)
