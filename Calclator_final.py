@@ -265,14 +265,14 @@ class CalculatorApp(UserControl):
         self.new_operand = True
 
 
-def main(page: Page):
-    page.title = "Calc App"
+# def main(page: Page):
+#     page.title = "Calc App"
 
-    # create application instance
-    calc = CalculatorApp()
+#     # create application instance
+#     calc = CalculatorApp()
 
-    # add application's root control to the page
-    page.add(calc)
+#     # add application's root control to the page
+#     page.add(calc)
 
 
-flet.app(target=main)
+# flet.app(target=main)
