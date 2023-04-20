@@ -1,8 +1,8 @@
 import flet
 from flet import Column, Container, ElevatedButton, Page, Row, Text, UserControl, border_radius, colors
 
-from Calclator_final import CalculatorApp
-from Greetings import GreetingsApp
+from Apps.Calc.Calclator_final import CalculatorApp
+from Apps.Greetings.Greetings import GreetingsApp
 
 
 def main(page: Page):
