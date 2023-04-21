@@ -25,3 +25,9 @@ jobs:
 
       - name: Run flet pack
         run: flet pack main.py
+
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: flet-pack
+          path: output/main.exe

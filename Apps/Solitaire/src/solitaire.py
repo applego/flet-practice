@@ -11,7 +11,6 @@ class Solitaire(ft.Stack):
         super().__init__()
         self.controls = []
         self.slots = []
-        self.cards = []
         self.width = SOLITAIRE_WIDTH
         self.height = SOLITAIRE_HEIGHT
 
@@ -23,7 +22,8 @@ class Solitaire(ft.Stack):
     def create_card_deck(self):
         card1 = Card(self, color="GREEN")
         card2 = Card(self, color="YELLOW")
-        self.cards = [card1, card2]
+        card3 = Card(self, color="RED")
+        self.cards = [card1, card2, card3]
 
     def create_slots(self):
         self.slots.append(Slot(top=0, left=0))
