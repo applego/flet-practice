@@ -1,5 +1,5 @@
-# from board import Board
-# from data_store import DataStore
+from board import Board
+from data_store import DataStore
 from flet import (
     ButtonStyle,
     Column,
@@ -24,13 +24,12 @@ from sidebar import Sidebar
 
 
 class AppLayout(Row):
-    # , store: DataStore
-    def __init__(self, app, page: Page, *args, **kwargs):
+    def __init__(self, app, page: Page, store: DataStore, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.app = app
         self.page = page
         self.page.on_resize = self.page_resize
-        # self.store: DataStore = store
+        self.store: DataStore = store
         self.toggle_nav_rail_button = IconButton(
             icon=icons.ARROW_CIRCLE_LEFT,
             icon_color=colors.BLUE_GREY_400,
@@ -38,7 +37,7 @@ class AppLayout(Row):
             selected_icon=icons.ARROW_CIRCLE_RIGHT,
             on_click=self.toggle_nav_rail,
         )
-        self.sidebar = Sidebar(self, page)  # , self.store
+        self.sidebar = Sidebar(self, self.store, page)
         self.members_view = Text("members view")
         self.all_boards_view = Column(
             [
@@ -124,63 +123,62 @@ class AppLayout(Row):
         self.page.update()
 
     def page_resize(self, e=None):
-        # if type(self.active_view) is Board:
-        #     self.active_view.resize(self.sidebar.visible, self.page.width, self.page.height)
+        if type(self.active_view) is Board:
+            self.active_view.resize(self.sidebar.visible, self.page.width, self.page.height)
         self.page.update()
 
     def hydrate_all_boards_view(self):
-        #     self.all_boards_view.controls[-1] = Row(
-        #         [
-        #             Container(
-        #                 content=Row(
-        #                     [
-        #                         Container(
-        #                             content=Text(value=b.name),
-        #                             data=b,
-        #                             expand=True,
-        #                             on_click=self.board_click,
-        #                         ),
-        #                         Container(
-        #                             content=PopupMenuButton(
-        #                                 items=[
-        #                                     PopupMenuItem(
-        #                                         content=Text(
-        #                                             value="Delete",
-        #                                             style="labelMedium",
-        #                                             text_align="center",
-        #                                         ),
-        #                                         on_click=self.app.delete_board,
-        #                                         data=b,
-        #                                     ),
-        #                                     PopupMenuItem(),
-        #                                     PopupMenuItem(
-        #                                         content=Text(
-        #                                             value="Archive",
-        #                                             style="labelMedium",
-        #                                             text_align="center",
-        #                                         ),
-        #                                     ),
-        #                                 ]
-        #                             ),
-        #                             padding=padding.only(right=-10),
-        #                             border_radius=border_radius.all(3),
-        #                         ),
-        #                     ],
-        #                     alignment="spaceBetween",
-        #                 ),
-        #                 border=border.all(1, colors.BLACK38),
-        #                 border_radius=border_radius.all(5),
-        #                 bgcolor=colors.WHITE60,
-        #                 padding=padding.all(10),
-        #                 width=250,
-        #                 data=b,
-        #             )
-        #             for b in self.store.get_boards()
-        #         ],
-        #         wrap=True,
-        #     )
-        #     self.sidebar.sync_board_destinations()
-        print("hydrated all boards view")
+        self.all_boards_view.controls[-1] = Row(
+            [
+                Container(
+                    content=Row(
+                        [
+                            Container(
+                                content=Text(value=b.name),
+                                data=b,
+                                expand=True,
+                                on_click=self.board_click,
+                            ),
+                            Container(
+                                content=PopupMenuButton(
+                                    items=[
+                                        PopupMenuItem(
+                                            content=Text(
+                                                value="Delete",
+                                                style="labelMedium",
+                                                text_align="center",
+                                            ),
+                                            on_click=self.app.delete_board,
+                                            data=b,
+                                        ),
+                                        PopupMenuItem(),
+                                        PopupMenuItem(
+                                            content=Text(
+                                                value="Archive",
+                                                style="labelMedium",
+                                                text_align="center",
+                                            ),
+                                        ),
+                                    ]
+                                ),
+                                padding=padding.only(right=-10),
+                                border_radius=border_radius.all(3),
+                            ),
+                        ],
+                        alignment="spaceBetween",
+                    ),
+                    border=border.all(1, colors.BLACK38),
+                    border_radius=border_radius.all(5),
+                    bgcolor=colors.WHITE60,
+                    padding=padding.all(10),
+                    width=250,
+                    data=b,
+                )
+                for b in self.store.get_boards()
+            ],
+            wrap=True,
+        )
+        self.sidebar.sync_board_destinations()
 
     def board_click(self, e):
         self.sidebar.bottom_nav_change(self.store.get_boards().index(e.control.data))

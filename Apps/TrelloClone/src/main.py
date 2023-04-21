@@ -1,8 +1,7 @@
 import flet
 from app_layout import AppLayout
-
-# from board import Board
-# from data_store import DataStore
+from board import Board
+from data_store import DataStore
 from flet import (
     AlertDialog,
     AppBar,
@@ -26,19 +25,17 @@ from flet import (
     padding,
     theme,
 )
-
-# from memory_store import InMemoryStore
-# from user import User
+from memory_store import InMemoryStore
+from user import User
 
 
 class TrelloApp(UserControl):
-    # , store: DataStore
-    def __init__(self, page: Page):
+    def __init__(self, page: Page, store: DataStore):
         super().__init__()
         self.page = page
-        # self.store: DataStore = store
+        self.store: DataStore = store
         self.page.on_route_change = self.route_change
-        # self.boards = self.store.get_boards()
+        self.boards = self.store.get_boards()
         self.login_profile_button = PopupMenuItem(text="Log in", on_click=self.login)
         self.appbar_items = [
             self.login_profile_button,
@@ -48,7 +45,7 @@ class TrelloApp(UserControl):
         self.appbar = AppBar(
             leading=Icon(icons.GRID_GOLDENRATIO_ROUNDED),
             leading_width=100,
-            title=Text(f"Trolli", font_family="Pacifico", size=32, text_align="start"),
+            title=Text("Trolli", font_family="Pacifico", size=32, text_align="start"),
             center_title=False,
             toolbar_height=75,
             bgcolor=colors.LIGHT_BLUE_ACCENT_700,
@@ -66,7 +63,7 @@ class TrelloApp(UserControl):
         self.layout = AppLayout(
             self,
             self.page,
-            # self.store,
+            self.store,
             tight=True,
             expand=True,
             vertical_alignment="start",
@@ -85,27 +82,27 @@ class TrelloApp(UserControl):
         )
         self.page.update()
         # create an initial board for demonstration if no boards
-        # if len(self.boards) == 0:
-        #     self.create_new_board("My First Board")
+        if len(self.boards) == 0:
+            self.create_new_board("My First Board")
         self.page.go("/")
 
     def login(self, e):
-        # def close_dlg(e):
-        #     if user_name.value == "" or password.value == "":
-        #         user_name.error_text = "Please provide username"
-        #         password.error_text = "Please provide password"
-        #         self.page.update()
-        #         return
-        #     else:
-        #         user = User(user_name.value, password.value)
-        #         if user not in self.store.get_users():
-        #             self.store.add_user(user)
-        #         self.user = user_name.value
-        #         self.page.client_storage.set("current_user", user_name.value)
+        def close_dlg(e):
+            if user_name.value == "" or password.value == "":
+                user_name.error_text = "Please provide username"
+                password.error_text = "Please provide password"
+                self.page.update()
+                return
+            else:
+                user = User(user_name.value, password.value)
+                if user not in self.store.get_users():
+                    self.store.add_user(user)
+                self.user = user_name.value
+                self.page.client_storage.set("current_user", user_name.value)
 
-        #     dialog.open = False
-        #     self.appbar_items[0] = PopupMenuItem(text=f"{self.page.client_storage.get('current_user')}'s Profile")
-        #     self.page.update()
+            dialog.open = False
+            self.appbar_items[0] = PopupMenuItem(text=f"{self.page.client_storage.get('current_user')}'s Profile")
+            self.page.update()
 
         user_name = TextField(label="User name")
         password = TextField(label="Password", password=True)
@@ -115,7 +112,7 @@ class TrelloApp(UserControl):
                 [
                     user_name,
                     password,
-                    ElevatedButton(text="Login"),  # , on_click=close_dlg
+                    ElevatedButton(text="Login", on_click=close_dlg),
                 ],
                 tight=True,
             ),
@@ -181,10 +178,9 @@ class TrelloApp(UserControl):
         dialog_text.focus()
 
     def create_new_board(self, board_name):
-        print("Creating new board: " + board_name)
-        # new_board = Board(self, self.store, board_name)
-        # self.store.add_board(new_board)
-        # self.layout.hydrate_all_boards_view()
+        new_board = Board(self, self.store, board_name)
+        self.store.add_board(new_board)
+        self.layout.hydrate_all_boards_view()
 
     def delete_board(self, e):
         self.store.remove_board(e.control.data)
@@ -198,7 +194,7 @@ def main(page: Page):
     page.theme.page_transitions.windows = "cupertino"
     page.fonts = {"Pacifico": "Pacifico-Regular.ttf"}
     page.bgcolor = colors.BLUE_GREY_200
-    app = TrelloApp(page)  # , InMemoryStore()
+    app = TrelloApp(page, InMemoryStore())
     page.add(app)
     page.update()
     app.initialize()

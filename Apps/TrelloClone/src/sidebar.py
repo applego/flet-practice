@@ -17,14 +17,13 @@ from flet import (
     margin,
 )
 
-# from data_store import DataStore
+from data_store import DataStore
 
 
 class Sidebar(UserControl):
-    # , store: DataStore, page
-    def __init__(self, app_layout, page):
+    def __init__(self, app_layout, store: DataStore, page):
         super().__init__()
-        # self.store: DataStore = store
+        self.store: DataStore = store
         self.app_layout = app_layout
         self.nav_rail_visible = True
         self.top_nav_items = [
@@ -98,30 +97,30 @@ class Sidebar(UserControl):
         return self.view
 
     def sync_board_destinations(self):
-        # boards = self.store.get_boards()
+        boards = self.store.get_boards()
         self.bottom_nav_rail.destinations = []
-        # for i in range(len(boards)):
-        #     b = boards[i]
-        #     self.bottom_nav_rail.destinations.append(
-        #         NavigationRailDestination(
-        #             label_content=TextField(
-        #                 value=b.name,
-        #                 hint_text=b.name,
-        #                 text_size=12,
-        #                 read_only=True,
-        #                 on_focus=self.board_name_focus,
-        #                 on_blur=self.board_name_blur,
-        #                 border="none",
-        #                 height=50,
-        #                 width=150,
-        #                 text_align="start",
-        #                 data=i,
-        #             ),
-        #             label=b.name,
-        #             selected_icon=icons.CHEVRON_RIGHT_ROUNDED,
-        #             icon=icons.CHEVRON_RIGHT_OUTLINED,
-        #         )
-        #     )
+        for i in range(len(boards)):
+            b = boards[i]
+            self.bottom_nav_rail.destinations.append(
+                NavigationRailDestination(
+                    label_content=TextField(
+                        value=b.name,
+                        hint_text=b.name,
+                        text_size=12,
+                        read_only=True,
+                        on_focus=self.board_name_focus,
+                        on_blur=self.board_name_blur,
+                        border="none",
+                        height=50,
+                        width=150,
+                        text_align="start",
+                        data=i,
+                    ),
+                    label=b.name,
+                    selected_icon=icons.CHEVRON_RIGHT_ROUNDED,
+                    icon=icons.CHEVRON_RIGHT_OUTLINED,
+                )
+            )
         self.view.update()
 
     def toggle_nav_rail(self, e):
