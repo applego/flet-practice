@@ -18,7 +18,14 @@ def main(page: ft.Page):
         card.top = game.start_top
         card.left = game.start_left
 
+    def move_on_top(card, controls):
+        """Moves draggable card to the to of the stack"""
+        controls.remove(card)
+        controls.append(card)
+        page.update()
+
     def start_drag(e: ft.DragStartEvent):
+        move_on_top(e.control, controls)
         solitaire.start_top = e.control.top
         solitaire.start_left = e.control.left
 
@@ -28,17 +35,24 @@ def main(page: ft.Page):
         e.control.update()
 
     def drop(e: ft.DragEndEvent):
-        if abs(e.control.top - slot.top) < 20 and abs(e.control.left - slot.left) < 20:
-            place(e.control, slot)
-        else:
-            bounce_back(solitaire, e.control)
+        for slot in slots:
+            if abs(e.control.top - slot.top) < 20 and abs(e.control.left - slot.left) < 20:
+                place(e.control, slot)
+                e.control.update()
+                return
 
+        bounce_back(solitaire, e.control)
         e.control.update()
 
-    slot = ft.Container(
-        width=70, height=100, left=200, top=0, border=ft.border.all(2, ft.colors.BLACK), bgcolor=ft.colors.RED
-    )
-    card = ft.GestureDetector(
+    slot0 = ft.Container(width=70, height=100, left=0, top=0, border=ft.border.all(1))
+
+    slot1 = ft.Container(width=70, height=100, left=200, top=0, border=ft.border.all(1))
+
+    slot2 = ft.Container(width=70, height=100, left=300, top=0, border=ft.border.all(1))
+
+    slots = [slot0, slot1, slot2]
+
+    card1 = ft.GestureDetector(
         mouse_cursor=ft.MouseCursor.MOVE,
         drag_interval=5,
         on_pan_start=start_drag,
@@ -50,9 +64,26 @@ def main(page: ft.Page):
         on_double_tap=lambda e: print("double tap"),
     )
 
+    card2 = ft.GestureDetector(
+        mouse_cursor=ft.MouseCursor.MOVE,
+        drag_interval=5,
+        on_pan_start=start_drag,
+        on_pan_update=drag,
+        on_pan_end=drop,
+        left=100,
+        top=0,
+        content=ft.Container(bgcolor=ft.colors.YELLOW, width=70, height=100),
+    )
+
     solitaire = Solitaire()
 
-    page.add(ft.Stack(controls=[slot, card], width=1000, height=500))
+    controls = [slot0, slot1, slot2, card1, card2]
+
+    # deal cards
+    place(card1, slot0)
+    place(card2, slot1)
+
+    page.add(ft.Stack(controls=controls, width=1000, height=500))
 
 
 ft.app(target=main)
