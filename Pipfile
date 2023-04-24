@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 flet = "*"
+auto-py-to-exe = "*"
+python-dotenv = "*"
+pillow = "*"
 
 [dev-packages]
 
