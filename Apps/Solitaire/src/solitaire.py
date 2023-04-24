@@ -160,5 +160,8 @@ class Solitaire(ft.Stack):
             self.update
 
         self.controls.append(
-            ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src="card_back.png"), open=True)
+            # ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src="card_back.png"), open=True)
+            ft.AlertDialog(
+                title=ft.Text("Congratulations! You won!"), content=ft.Image(src="/images/card_back.png"), open=True
+            )
         )

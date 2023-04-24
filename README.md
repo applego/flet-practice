@@ -33,3 +33,10 @@ auto-py-to-exe
 ```
 
 flet がインストール済の環境でないとうまくいかない？
+
+#### カスタム Icon
+
+flet pack your_program.py --icon <your-image.png>
+
+- これで一応成功した。assets もうまくいった
+  flet pack main.py --icon card_back.png --add-data "assets;assets"
