@@ -15,6 +15,7 @@ class Card(ft.GestureDetector):
         self.on_pan_update = self.drag
         self.on_pan_end = self.drop
         self.on_tap = self.click
+        self.on_double_tap = self.double_click
         self.suite = suite
         self.rank = rank
         self.face_up = False
@@ -109,12 +110,14 @@ class Card(ft.GestureDetector):
                     self.place(slot)
                     self.update()
                     return
-            for slot in self.solitaire.foundations:
-                if abs(self.top - slot.top) < DROP_PROXIMITY and abs(self.left - slot.left) < DROP_PROXIMITY:
-                    self.place(slot)
-                    self.update()
-                    return
-
+            if len(self.get_draggable_pile()) == 1:
+                for slot in self.solitaire.foundations:
+                    if (
+                        abs(self.top - slot.top) < DROP_PROXIMITY and abs(self.left - slot.left) < DROP_PROXIMITY
+                    ) and self.solitaire.check_foundations_rules(self, slot):
+                        self.place(slot)
+                        self.update()
+                        return
             self.bounce_back()
             self.update()
 
@@ -129,7 +132,7 @@ class Card(ft.GestureDetector):
                 self.turn_face_up()
                 self.solitaire.update()
 
-    def doubleclick(self, e):
+    def double_click(self, e):
         if self.face_up:
             self.move_on_top()
             for slot in self.solitaire.foundations:
