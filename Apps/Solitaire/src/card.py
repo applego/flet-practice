@@ -21,15 +21,11 @@ class Card(ft.GestureDetector):
         self.left = None
         self.solitaire = solitaire
         self.slot = None
-        # self.card_offset = CARD_OFFSET
-        # self.color = color
-
         self.content = ft.Container(
             width=CARD_WIDTH,
             height=CARD_HEIGTH,
             border_radius=ft.border_radius.all(6),
             # content=ft.Image(src=f"/images/card_back.png"),
-            
             content=ft.Image(src="card_back.png"),
         )
 
@@ -55,7 +51,10 @@ class Card(ft.GestureDetector):
         draggable_pile = self.get_draggable_pile()
 
         for card in draggable_pile:
-            card.top = slot.top + len(slot.pile) * CARD_OFFSET
+            if slot in self.solitaire.tableau:
+                card.top = slot.top + len(slot.pile) * CARD_OFFSET
+            else:
+                card.top = slot.top
             card.left = slot.left
 
             # remove card from it's original slot, if exists
@@ -89,11 +88,17 @@ class Card(ft.GestureDetector):
             card.update()
 
     def drop(self, e: ft.DragEndEvent):
-        for slot in self.solitaire.slots:
+        for slot in self.solitaire.tableau:
             if (
                 abs(self.top - (slot.top + len(slot.pile) * CARD_OFFSET)) < DROP_PROXIMITY
                 and abs(self.left - slot.left) < DROP_PROXIMITY
             ):
+                self.place(slot)
+                self.update()
+                return
+
+        for slot in self.solitaire.foundations:
+            if abs(self.top - slot.top) < DROP_PROXIMITY and abs(self.left - slot.left) < DROP_PROXIMITY:
                 self.place(slot)
                 self.update()
                 return
