@@ -159,9 +159,10 @@ class Solitaire(ft.Stack):
             card.turn_face_down()
             self.update
 
+        if __debug__:
+            image_src = "card_back.png"
+        else:
+            image_src = "/images/card_back.png"
         self.controls.append(
-            # ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src="card_back.png"), open=True)
-            ft.AlertDialog(
-                title=ft.Text("Congratulations! You won!"), content=ft.Image(src="/images/card_back.png"), open=True
-            )
+            ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src=image_src), open=True)
         )

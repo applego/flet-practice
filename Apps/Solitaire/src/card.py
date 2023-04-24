@@ -23,26 +23,35 @@ class Card(ft.GestureDetector):
         self.left = None
         self.solitaire = solitaire
         self.slot = None
+        if __debug__:
+            image_src = "card_back.png"
+        else:
+            image_src = "/images/card_back.png"
+
         self.content = ft.Container(
             width=CARD_WIDTH,
             height=CARD_HEIGTH,
             border_radius=ft.border_radius.all(6),
-            content=ft.Image(src="/images/card_back.png"),
-            # content=ft.Image(src="card_back.png"),
+            content=ft.Image(src=image_src),
         )
 
     def turn_face_up(self):
         """Reveals card"""
         self.face_up = True
-        self.content.content.src = f"/images/{self.rank.name}_{self.suite.name}.svg"
-        # self.content.content.src = f"{self.rank.name}_{self.suite.name}.svg"
+        if __debug__:
+            self.content.content.src = f"{self.rank.name}_{self.suite.name}.svg"
+        else:
+            self.content.content.src = f"/images/{self.rank.name}_{self.suite.name}.svg"
         self.update()
 
     def turn_face_down(self):
         """Hides card"""
         self.face_up = False
-        self.content.content.src = "/images/card_back.png"
-        # self.content.content.src = "card_back.png"
+        print(__debug__)
+        if __debug__:
+            self.content.content.src = "card_back.png"
+        else:
+            self.content.content.src = "/images/card_back.png"
         self.update()
 
     def move_on_top(self):
