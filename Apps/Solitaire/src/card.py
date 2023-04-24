@@ -38,6 +38,13 @@ class Card(ft.GestureDetector):
         self.content.content.src = f"{self.rank.name}_{self.suite.name}.svg"
         self.update()
 
+    def turn_face_down(self):
+        """Hides card"""
+        self.face_up = False
+        # self.content.content.src = "/images/card_back.png"
+        self.content.content.src = "card_back.png"
+        self.update()
+
     def move_on_top(self):
         """Brings draggable card pile to the top of the stack"""
 
@@ -83,8 +90,9 @@ class Card(ft.GestureDetector):
 
     def get_draggable_pile(self):
         """returns list of cards that will be dragged together, starting with the current card"""
-        if self.slot is not None:
-            return self.slot.pile[self.slot.pile.index(self) :]
+        if self.slot is not None and self.slot != self.solitaire.stock and self.slot != self.solitaire.waste:
+            idx = self.slot.pile.index(self)
+            return self.slot.pile[idx:]
         return [self]
 
     def start_drag(self, e: ft.DragStartEvent):
@@ -126,11 +134,11 @@ class Card(ft.GestureDetector):
             if not self.face_up and self == self.slot.get_top_card():
                 self.turn_face_up()
                 self.update()
-            elif self.slot == self.solitaire.stock:
-                self.move_on_top()
-                self.place(self.solitaire.waste)
-                self.turn_face_up()
-                self.solitaire.update()
+        elif self.slot == self.solitaire.stock:
+            self.move_on_top()
+            self.place(self.solitaire.waste)
+            self.turn_face_up()
+            self.solitaire.update()
 
     def double_click(self, e):
         if self.face_up:
