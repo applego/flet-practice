@@ -1,4 +1,3 @@
-# CARD_OFFSET = 20
 SOLITAIRE_WIDTH = 1000
 SOLITAIRE_HEIGHT = 500
 
@@ -102,11 +101,14 @@ class Solitaire(ft.Stack):
         # place remaining cards to stock pile
         for card in remaining_cards:
             card.place(self.stock)
+            print(f"Card in stock: {card.rank.name} {card.suite.name}")
 
         self.update()
 
         for slot in self.tableau:
-            slot.get_top_card().turn_face_up()
+            top_card = slot.get_top_card()
+            if top_card is not None:
+                top_card.turn_face_up()
 
         self.update()
 
@@ -134,4 +136,29 @@ class Solitaire(ft.Stack):
             card.turn_face_down()
             card.move_on_top()
             card.place(self.stock)
-        self.update()
+        self.update
+
+    def check_win(self):
+        cards_num = 0
+        for slot in self.foundations:
+            cards_num += len(slot.pile)
+        if cards_num == 52:
+            return True
+        return False
+
+    def winning_sequence(self):
+        for slot in self.foundations:
+            for card in slot.pile:
+                card.animate_position = 2000
+                card.move_on_top()
+                card.top = random.randint(0, SOLITAIRE_HEIGHT)
+                card.left = random.randint(0, SOLITAIRE_WIDTH)
+                self.update()
+
+        for card in self.cards:
+            card.turn_face_down()
+            self.update
+
+        self.controls.append(
+            ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src="card_back.png"), open=True)
+        )

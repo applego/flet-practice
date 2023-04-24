@@ -1,7 +1,7 @@
+import flet as ft
+
 SLOT_WIDTH = 70
 SLOT_HEIGHT = 100
-
-import flet as ft
 
 
 class Slot(ft.Container):
@@ -10,13 +10,12 @@ class Slot(ft.Container):
         self.pile = []
         self.width = SLOT_WIDTH
         self.height = SLOT_HEIGHT
-        self.top = top
         self.left = left
-        self.border = border
-        self.border_radius = ft.border_radius.all(6)
-
+        self.top = top
         self.on_click = self.click
         self.solitaire = solitaire
+        self.border = border
+        self.border_radius = ft.border_radius.all(6)
 
     def get_top_card(self):
         if len(self.pile) > 0:
