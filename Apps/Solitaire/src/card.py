@@ -1,9 +1,9 @@
+import flet as ft
+
 CARD_WIDTH = 70
 CARD_HEIGTH = 100
 DROP_PROXIMITY = 30
 CARD_OFFSET = 20
-
-import flet as ft
 
 
 class Card(ft.GestureDetector):
@@ -25,7 +25,7 @@ class Card(ft.GestureDetector):
             width=CARD_WIDTH,
             height=CARD_HEIGTH,
             border_radius=ft.border_radius.all(6),
-            # content=ft.Image(src=f"/images/card_back.png"),
+            # content=ft.Image(src="/images/card_back.png"),
             content=ft.Image(src="card_back.png"),
         )
 
@@ -48,7 +48,10 @@ class Card(ft.GestureDetector):
         """Returns draggable pile to its original position"""
         draggable_pile = self.get_draggable_pile()
         for card in draggable_pile:
-            card.top = card.slot.top + card.slot.pile.index(card) * CARD_OFFSET
+            if card.slot in self.solitaire.tableau:
+                card.top = card.slot.top + card.slot.pile.index(card) * CARD_OFFSET
+            else:
+                card.top = card.slot.top
             card.left = card.slot.left
         self.solitaire.update()
 
@@ -79,8 +82,7 @@ class Card(ft.GestureDetector):
     def get_draggable_pile(self):
         """returns list of cards that will be dragged together, starting with the current card"""
         if self.slot is not None:
-            idx = self.slot.pile.index(self)
-            return self.slot.pile[idx:]
+            return self.slot.pile[self.slot.pile.index(self) :]
         return [self]
 
     def start_drag(self, e: ft.DragStartEvent):
@@ -103,7 +105,6 @@ class Card(ft.GestureDetector):
                 self.place(slot)
                 self.update()
                 return
-
         for slot in self.solitaire.foundations:
             if abs(self.top - slot.top) < DROP_PROXIMITY and abs(self.left - slot.left) < DROP_PROXIMITY:
                 self.place(slot)

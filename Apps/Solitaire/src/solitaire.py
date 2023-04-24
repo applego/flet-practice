@@ -1,10 +1,11 @@
+# CARD_OFFSET = 20
 SOLITAIRE_WIDTH = 1000
 SOLITAIRE_HEIGHT = 500
 
-import random
 import flet as ft
 from slot import Slot
 from card import Card
+import random
 
 
 class Suite:
@@ -23,7 +24,6 @@ class Solitaire(ft.Stack):
     def __init__(self):
         super().__init__()
         self.controls = []
-        self.slots = []
         self.width = SOLITAIRE_WIDTH
         self.height = SOLITAIRE_HEIGHT
 
@@ -63,6 +63,7 @@ class Solitaire(ft.Stack):
 
     def create_slots(self):
         self.stock = Slot(top=0, left=0, border=ft.border.all(1))
+
         self.waste = Slot(top=0, left=100, border=None)
 
         self.foundations = []
@@ -101,6 +102,8 @@ class Solitaire(ft.Stack):
         # place remaining cards to stock pile
         for card in remaining_cards:
             card.place(self.stock)
+
+        self.update()
 
         for slot in self.tableau:
             slot.get_top_card().turn_face_up()
