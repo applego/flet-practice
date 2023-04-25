@@ -3,7 +3,8 @@ from slot import Slot
 from card import Card
 import random
 
-FLET_DEBUG_MODE = False
+# FLET_DEBUG_MODE = True
+import config as cfg
 
 SOLITAIRE_WIDTH = 1000
 SOLITAIRE_HEIGHT = 500
@@ -161,7 +162,7 @@ class Solitaire(ft.Stack):
             card.turn_face_down()
             self.update
 
-        if FLET_DEBUG_MODE:
+        if cfg.FLET_DEBUG_MODE:
             image_src = "card_back.png"
         else:
             image_src = "/images/card_back.png"

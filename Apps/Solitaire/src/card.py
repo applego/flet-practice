@@ -1,6 +1,8 @@
 import flet as ft
 
-FLET_DEBUG_MODE = False
+import config as cfg
+
+# FLET_DEBUG_MODE = True
 
 CARD_WIDTH = 70
 CARD_HEIGTH = 100
@@ -25,7 +27,7 @@ class Card(ft.GestureDetector):
         self.left = None
         self.solitaire = solitaire
         self.slot = None
-        if FLET_DEBUG_MODE:
+        if cfg.FLET_DEBUG_MODE:
             image_src = "card_back.png"
         else:
             image_src = "/images/card_back.png"
@@ -40,7 +42,7 @@ class Card(ft.GestureDetector):
     def turn_face_up(self):
         """Reveals card"""
         self.face_up = True
-        if FLET_DEBUG_MODE:
+        if cfg.FLET_DEBUG_MODE:
             # TODO: ビルド盤でも__debug__に入っている、うまくいった。あとは本当にデバッグ実行時に画像が表示されるか。
             self.content.content.src = f"{self.rank.name}_{self.suite.name}.svg"
         else:
@@ -50,7 +52,7 @@ class Card(ft.GestureDetector):
     def turn_face_down(self):
         """Hides card"""
         self.face_up = False
-        if FLET_DEBUG_MODE:
+        if cfg.FLET_DEBUG_MODE:
             self.content.content.src = "card_back.png"
         else:
             self.content.content.src = "/images/card_back.png"
