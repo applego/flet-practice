@@ -1,10 +1,13 @@
-SOLITAIRE_WIDTH = 1000
-SOLITAIRE_HEIGHT = 500
-
 import flet as ft
 from slot import Slot
 from card import Card
 import random
+
+# FLET_DEBUG_MODE = True
+import config as cfg
+
+SOLITAIRE_WIDTH = 1000
+SOLITAIRE_HEIGHT = 500
 
 
 class Suite:
@@ -159,9 +162,10 @@ class Solitaire(ft.Stack):
             card.turn_face_down()
             self.update
 
+        if cfg.FLET_DEBUG_MODE:
+            image_src = "card_back.png"
+        else:
+            image_src = "/images/card_back.png"
         self.controls.append(
-            # ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src="card_back.png"), open=True)
-            ft.AlertDialog(
-                title=ft.Text("Congratulations! You won!"), content=ft.Image(src="/images/card_back.png"), open=True
-            )
+            ft.AlertDialog(title=ft.Text("Congratulations! You won!"), content=ft.Image(src=image_src), open=True)
         )
