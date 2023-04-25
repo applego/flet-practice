@@ -34,9 +34,18 @@ auto-py-to-exe
 
 flet がインストール済の環境でないとうまくいかない？
 
+#### 応急処置
+
+FLET_DEBUG_MODE = False
+
+にして flet pack する
+
+（DEBUG 実行時は = True）
+
 #### カスタム Icon
 
 flet pack your_program.py --icon <your-image.png>
 
 - これで一応成功した。assets もうまくいった
+  cd Apps/Solitaire/src
   flet pack main.py --icon card_back.png --add-data "assets;assets"
