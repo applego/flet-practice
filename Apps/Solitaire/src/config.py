@@ -1,1 +1,1 @@
-FLET_DEBUG_MODE = True
+FLET_DEBUG_MODE = False

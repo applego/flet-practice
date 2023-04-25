@@ -41,6 +41,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    version='C:\\Users\\YUSUKE~1.DD\\AppData\\Local\\Temp\\9f1b6e39-d552-43a0-820f-1d1c9d789ae0',
+    version='C:\\Users\\YUSUKE~1.DD\\AppData\\Local\\Temp\\753e0103-a2ca-47bf-8253-d24714bf8736',
     icon=['card_back.png'],
 )
